@@ -5,8 +5,8 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
-from locators.base_locators import BaseLocators
 import allure
+
 
 class BasePage:
     def __init__(self, driver, timeout=15):
@@ -24,6 +24,17 @@ class BasePage:
     @allure.step('Дождаться кликабельности элемента')
     def wait_for_clickable(self, locator):
         return self.wait.until(EC.element_to_be_clickable(locator))
+
+    @allure.step('Дождаться исчезновения элемента')
+    def wait_for_element_not_visible(self, locator, timeout=None):
+        """
+        Ожидание, пока элемент не станет невидимым
+        """
+        if timeout is None:
+            wait = self.wait
+        else:
+            wait = WebDriverWait(self.driver, timeout)
+        wait.until(EC.invisibility_of_element_located(locator))
 
     @allure.step('Клик по элементу')
     def click(self, locator):
@@ -49,20 +60,3 @@ class BasePage:
     @allure.step('Проверить отображение элемента')
     def is_displayed(self, locator):
         return self.wait_for_element(locator).is_displayed()
-
-    @allure.step('Выполнить авторизацию')
-    def login(self, email, password):
-        self.click(BaseLocators.BTN_LOGIN_ACC)
-        self.fill_field(BaseLocators.FIELD_EMAIL, email)
-        self.fill_field(BaseLocators.FIELD_PASSWORD, password)
-        self.click(BaseLocators.BTN_LOGIN)
-
-    @allure.step('Перейти в конструктор')
-    def go_to_constructor(self):
-        self.click(BaseLocators.BTN_CONSTRR)
-        self.wait_for_element(BaseLocators.BUN)
-
-    @allure.step('Перейти в ленту заказов')
-    def go_to_feed(self):
-        self.click(BaseLocators.BTN_ORDER_FEED)
-        self.wait_for_element(BaseLocators.FEED_TITLE)
