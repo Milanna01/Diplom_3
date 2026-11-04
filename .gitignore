@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# Отчеты
+allure-results/
+allure-report/
+reports/
+
+# Драйверы
+chromedriver*
+geckodriver*
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Логи
+*.log
+logs/
+
+# Временные файлы
+tmp/
+temp/
+*.tmp
+*.temp
